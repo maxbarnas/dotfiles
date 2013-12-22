@@ -43,6 +43,16 @@ install rhino
 install tree
 install webkit2png
 install zopfli
+install mercurial
+install io
+install pstree
+install protobuf
+install phantomjs
+install tcpdump
+install tmux
+install ssh-copy-id
+install pv
+
 
 tap homebrew/versions
 install lua52
