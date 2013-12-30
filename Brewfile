@@ -43,6 +43,7 @@ install rhino
 install tree
 install webkit2png
 install zopfli
+install autoenv
 install mercurial
 install io
 install pstree

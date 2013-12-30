@@ -9,7 +9,7 @@
 "   - Vincent Driessen
 "   - Benjamin Reitzammer
 
-" Important stuff {{{
+" Init & Vundle {{{
 set nocompatible
 filetype off
 set rtp+=~/dotfiles/.vim/bundle/vundle/
@@ -21,8 +21,12 @@ Bundle 'gmarik/vundle'
 Bundle 'quanganhdo/grb256'
 set t_Co=256
 colorscheme grb256
-" Airline; replacement for powerline
+
 Bundle 'bling/vim-airline'
+Bundle 'git://git.wincent.com/command-t.git'
+Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+Bundle 'ack.vim'
+Bundle 'tpope/vim-markdown'
 
 filetype plugin indent on
 " }}}
@@ -33,45 +37,47 @@ set shell=bash
 set lazyredraw
 set autoread
 set hidden
+set viminfo=
 " }}}
 
 " UI " {{{
-set relativenumber " Show relative line numbers
-syntax on " Enable syntax highlighting
-set ruler " Show current position in status bar
-set cursorline " Highlight current line
-set synmaxcol=800 " Don’t highlight lines longer than 800 chars
-set wrap " Soft-wrap long lines
+set relativenumber                " Show relative line numbers
+syntax on                         " Enable syntax highlighting
+set ruler                         " Show current position in status bar
+set cursorline                    " Highlight current line
+set synmaxcol=800                 " Don’t highlight lines longer than 800 chars
+set wrap                          " Soft-wrap long lines
 set linebreak
-set showbreak=↪ " Prefix linebreaks with this fancy arrow
-set scrolloff=5 " Keep at least 5 lines above/below
-set title " Change terminal title
-set showmode " Always show current mode
-set laststatus=2 " Make sure airline isn’t hidden
+set showbreak=↪                   " Prefix linebreaks with this fancy arrow
+set scrolloff=5                   " Keep at least 5 lines above/below
+set title                         " Change terminal title
+set showmode                      " Always show current mode
+set laststatus=2                  " Make sure airline isn’t hidden
 let g:airline_powerline_fonts = 1 " Custom airline font
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
 let g:airline_symbols.space = "\ua0"
-set shortmess=atI " Hide intro message
-set showcmd " Show command as it’s being typed
-set list " Show invisible characters
-set noerrorbells " Disable bells
-set wildmenu " Enhance command-line completion
+set shortmess=atI                 " Hide intro message
+set showcmd                       " Show command as it’s being typed
+set list                          " Show invisible characters
+set noerrorbells                  " Disable bells
+set wildmenu                      " Enhance command-line completion
 " }}}
 
 " Editing " {{{
-set et " Pressing TAB creates spaces instead
+set et                            " Pressing TAB creates spaces instead
 set tabstop=2
 set shiftwidth=2
-set backspace=indent,eol,start " Allow backspace in insert mode
+set backspace=indent,eol,start    " Allow backspace in insert mode
 set lcs=tab:▸\ ,extends:❯,precedes:❮,nbsp:.,trail:·,eol:¬
-set nobackup " Disable backups
-set nowb " Disable write backups
-set noswapfile " Disable swap files
-set completeopt-=preview " Disable scratch preview buffer
+set nobackup                      " Disable backups
+set nowb                          " Disable write backups
+set noswapfile                    " Disable swap files
+set completeopt-=preview          " Disable scratch preview buffer
 set ttyfast
-set encoding=utf-8 nobomb " Use UTF-8 without BOM
+set encoding=utf-8 nobomb         " Use UTF-8 without BOM
+set nojoinspaces                  " Don’t double space after join
 " }}}
 
 " Convenience mappings " {{{
@@ -105,11 +111,11 @@ iabbrev lhap ツ
 " }}}
 
 " Searching " {{{
-set showmatch " Show matching bracket when under cursor
-set hlsearch " Highlight search results
-set ignorecase " Ignore case when searching
-set smartcase " Case-sensitive if pattern includes uppercase
-set incsearch " Highlight dynamically while typing
+set showmatch                     " Show matching bracket when under cursor
+set hlsearch                      " Highlight search results
+set ignorecase                    " Ignore case when searching
+set smartcase                     " Case-sensitive if pattern includes uppercase
+set incsearch                     " Highlight dynamically while typing
 
 " Clear the higlighted search results
 nnoremap <cr> :nohlsearch<cr>
@@ -137,10 +143,10 @@ endif
 
 " Make sure Vim returns to the same line when reopening a file
 augroup line_return
-    au!
-    au BufReadPost *
-        \ if line("'\"") > 0 && line("'\"") <= line("$") |
-        \     execute 'normal! g`"zvzz' |
-        \ endif
+  au!
+  au BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \     execute 'normal! g`"zvzz' |
+    \ endif
 augroup END
 " }}}
