@@ -108,6 +108,11 @@ nnoremap vaa ggVG
 iabbrev ldis ಠ_ಠ
 iabbrev lsir ಠ_ರೃ
 iabbrev lhap ツ
+iabbrev fliptable （╯°□°）╯ ┻━┻
+" Switch tabs with ctrl+direction
+map <C-l> :tabn<cr>
+map <C-h> :tabp<cr>
+map <C-t> :tabnew<cr>
 " }}}
 
 " Searching " {{{
@@ -124,6 +129,9 @@ nnoremap <leader>A :Ack
 " Keep search matches in middle of window
 nnoremap n nzzzv
 nnoremap N Nzzzv
+
+" Ignore stuff from Command-T
+set wildignore=bower_components,_bower_components,node_modules,*.jpg,*.png,*.gif,play-2.*,app/protobuf,target,ghostdriver
 " }}}
 
 " Folding " {{{
