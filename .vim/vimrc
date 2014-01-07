@@ -25,7 +25,9 @@ colorscheme grb256
 Bundle 'bling/vim-airline'
 Bundle 'git://git.wincent.com/command-t.git'
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-Bundle 'ack.vim'
+Bundle 'kchmck/vim-coffee-script'
+" Ack for searching
+Bundle 'https://github.com/mileszs/ack.vim'
 Bundle 'tpope/vim-markdown'
 
 filetype plugin indent on
@@ -66,6 +68,7 @@ set wildmenu                      " Enhance command-line completion
 " }}}
 
 " Editing " {{{
+set clipboard=unnamed             " Use the system clipboard
 set et                            " Pressing TAB creates spaces instead
 set tabstop=2
 set shiftwidth=2
@@ -131,7 +134,7 @@ nnoremap n nzzzv
 nnoremap N Nzzzv
 
 " Ignore stuff from Command-T
-set wildignore=bower_components,_bower_components,node_modules,*.jpg,*.png,*.gif,play-2.*,app/protobuf,target,ghostdriver
+set wildignore=bower_components,_bower_components,node_modules,*.jpg,*.png,*.gif,play-2.*,app/protobuf,target,ghostdriver,dist,*.eot,*.svg,*.ttf,*.woff
 " }}}
 
 " Folding " {{{
