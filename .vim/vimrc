@@ -26,6 +26,7 @@ Bundle 'bling/vim-airline'
 Bundle 'git://git.wincent.com/command-t.git'
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 Bundle 'kchmck/vim-coffee-script'
+Bundle 'derekwyatt/vim-scala'
 " Ack for searching
 Bundle 'https://github.com/mileszs/ack.vim'
 Bundle 'tpope/vim-markdown'
@@ -105,6 +106,8 @@ noremap H 0
 noremap L $
 " Toggle paste mode
 map <leader>pp :setlocal paste!<cr>
+" Toggle alternate buffer
+nnoremap <leader><leader> <c-^>
 " Select all
 nnoremap vaa ggVG
 " Emoticons
@@ -161,3 +164,41 @@ augroup line_return
     \ endif
 augroup END
 " }}}
+
+" Ruby on Rails "{{{
+" Fast-way to run rspec from vim, thanks to Gary Bernhardt
+" https://github.com/garybernhardt/dotfiles/blob/master/.vimrc
+nnoremap <leader>a :call RunTests('')<cr>
+function! RunTests(filename)
+  " Write the file and run tests for the given filename
+  if expand("%") != ""
+    :w
+  end
+  if match(a:filename, '\.feature$') != -1
+    exec ":!script/features " . a:filename
+  else
+    " First choice: project-specific test script
+    if filereadable("script/test")
+      exec ":!script/test " . a:filename
+    " Fall back to the .test-commands pipe if available, assuming someone
+    " is reading the other side and running the commands
+    elseif filewritable(".test-commands")
+      let cmd = 'rspec --color --format progress --require "~/lib/vim_rspec_formatter" --format VimFormatter --out tmp/quickfix'
+      exec ":!echo " . cmd . " " . a:filename . " > .test-commands"
+
+      " Write an empty string to block until the command completes
+      sleep 100m " milliseconds
+      :!echo > .test-commands
+      redraw!
+    " Fall back to a blocking test run with Bundler
+    elseif filereadable("Gemfile")
+      exec ":!bundle exec rspec --color " . a:filename
+    " Fall back to a normal blocking test run
+    else
+      exec ":!rspec --color " . a:filename
+    end
+  end
+endfunction
+" Corresponds with G. Bernhardt’s Cucumber wrapper
+nnoremap <leader>c :w\|:!script/features<cr>
+"}}}
