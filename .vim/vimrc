@@ -27,9 +27,11 @@ Bundle 'git://git.wincent.com/command-t.git'
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'derekwyatt/vim-scala'
-" Ack for searching
 Bundle 'https://github.com/mileszs/ack.vim'
 Bundle 'tpope/vim-markdown'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'wavded/vim-stylus'
 
 filetype plugin indent on
 " }}}
@@ -115,10 +117,25 @@ iabbrev ldis ಠ_ಠ
 iabbrev lsir ಠ_ರೃ
 iabbrev lhap ツ
 iabbrev fliptable （╯°□°）╯ ┻━┻
-" Switch tabs with ctrl+direction
-map <C-l> :tabn<cr>
-map <C-h> :tabp<cr>
-map <C-t> :tabnew<cr>
+" Quickly get to system clipboard
+map <leader>y "*y
+" Move around splits with <c-hjkl>
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+nnoremap <leader>v :vsplit<cr>
+" Rename current file, thanks to Gary Bernhardt
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+map <leader>n :call RenameFile()<cr>
 " }}}
 
 " Searching " {{{
@@ -137,7 +154,14 @@ nnoremap n nzzzv
 nnoremap N Nzzzv
 
 " Ignore stuff from Command-T
-set wildignore=bower_components,_bower_components,node_modules,*.jpg,*.png,*.gif,play-2.*,app/protobuf,target,ghostdriver,dist,*.eot,*.svg,*.ttf,*.woff
+set wildignore+=.hg,.git,.svn                                     " version control
+set wildignore+=bower_components,_bower_components,node_modules   " frontend packages
+set wildignore+=*.jpg,*.png,*.gif                                 " binary images
+set wildignore+=play-2.*,app/protobuf,target/*,ghostdriver        " play framework
+set wildignore+=context,app-pub,project,shared-kernel,sub
+set wildignore+=venv                                              " python
+set wildignore+=*.eot,*.svg,*.ttf,*.woff                          " fonts
+set wildignore+=dist                                              " generated distribution packages
 " }}}
 
 " Folding " {{{
