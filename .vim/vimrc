@@ -125,6 +125,7 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 nnoremap <leader>v :vsplit<cr>
+nnoremap <leader>h :split<cr>
 " Rename current file, thanks to Gary Bernhardt
 function! RenameFile()
     let old_name = expand('%')
@@ -162,6 +163,7 @@ set wildignore+=context,app-pub,project,shared-kernel,sub
 set wildignore+=venv                                              " python
 set wildignore+=*.eot,*.svg,*.ttf,*.woff                          " fonts
 set wildignore+=dist                                              " generated distribution packages
+set wildignore+=tmp
 " }}}
 
 " Folding " {{{
