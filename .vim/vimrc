@@ -30,7 +30,6 @@ Bundle 'derekwyatt/vim-scala'
 Bundle 'https://github.com/mileszs/ack.vim'
 Bundle 'tpope/vim-markdown'
 Bundle 'wavded/vim-stylus'
-Bundle "pangloss/vim-javascript"
 
 filetype plugin indent on
 " }}}
@@ -236,3 +235,4 @@ endfunction
 " Corresponds with G. Bernhardt’s Cucumber wrapper
 nnoremap <leader>c :w\|:!script/features<cr>
 "}}}
+
