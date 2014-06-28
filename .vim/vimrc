@@ -30,6 +30,7 @@ Bundle 'derekwyatt/vim-scala'
 Bundle 'https://github.com/mileszs/ack.vim'
 Bundle 'tpope/vim-markdown'
 Bundle 'wavded/vim-stylus'
+Plugin 'jiangmiao/auto-pairs'
 
 filetype plugin indent on
 " }}}
