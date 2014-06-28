@@ -29,9 +29,8 @@ Bundle 'kchmck/vim-coffee-script'
 Bundle 'derekwyatt/vim-scala'
 Bundle 'https://github.com/mileszs/ack.vim'
 Bundle 'tpope/vim-markdown'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'wavded/vim-stylus'
+Bundle "pangloss/vim-javascript"
 
 filetype plugin indent on
 " }}}
@@ -43,6 +42,7 @@ set lazyredraw
 set autoread
 set hidden
 set viminfo=
+set noesckeys
 " }}}
 
 " UI " {{{
@@ -88,7 +88,7 @@ set nojoinspaces                  " Don’t double space after join
 
 " Convenience mappings " {{{
 "---------------------------
-" Better than `,` since `-` is useless anyway
+" Better than `,` since `-` is useless anyway and we need `,` for reverse find
 let mapleader="-"
 " Clean trailing whitespace
 nnoremap <leader>w mz:%s/\s\+$//<cr>:let @/=''<cr>`z
@@ -100,8 +100,6 @@ nmap <leader>s :w!<cr>
 noremap <leader>S :w !sudo tee % > /dev/null<CR>
 " Fast quit
 nmap <leader>q :q<cr>
-" Fast escape
-inoremap jj <ESC>
 " Jump to beginning of line
 noremap H 0
 " Jump to end of line
@@ -110,8 +108,6 @@ noremap L $
 map <leader>pp :setlocal paste!<cr>
 " Toggle alternate buffer
 nnoremap <leader><leader> <c-^>
-" Select all
-nnoremap vaa ggVG
 " Emoticons
 iabbrev ldis ಠ_ಠ
 iabbrev lsir ಠ_ರೃ
@@ -126,6 +122,8 @@ nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 nnoremap <leader>v :vsplit<cr>
 nnoremap <leader>h :split<cr>
+nnoremap <c--> <c-w>-
+nnoremap <c-+> <-w>+
 " Rename current file, thanks to Gary Bernhardt
 function! RenameFile()
     let old_name = expand('%')
@@ -137,6 +135,8 @@ function! RenameFile()
     endif
 endfunction
 map <leader>n :call RenameFile()<cr>
+" Reload active Chrome tab. Needs chrome-cli. Get it with Homebrew.
+nnoremap <leader>l :w\|:silent !chrome-cli reload<cr>
 " }}}
 
 " Searching " {{{
@@ -164,6 +164,11 @@ set wildignore+=venv                                              " python
 set wildignore+=*.eot,*.svg,*.ttf,*.woff                          " fonts
 set wildignore+=dist                                              " generated distribution packages
 set wildignore+=tmp
+set wildignore+=*.lock,*.db
+set wildignore+=activator*
+set wildignore+=app/assets/javascripts/lib/*
+set wildignore+=*.pdf
+set wildignore+=report
 " }}}
 
 " Folding " {{{
@@ -189,6 +194,9 @@ augroup line_return
     \     execute 'normal! g`"zvzz' |
     \ endif
 augroup END
+
+" Don't syntax highlight markdown because it's often wrong
+autocmd! FileType mkd setlocal syn=off
 " }}}
 
 " Ruby on Rails "{{{
