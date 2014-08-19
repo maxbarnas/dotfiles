@@ -12,26 +12,30 @@
 " Init & Vundle {{{
 set nocompatible
 filetype off
-set rtp+=~/dotfiles/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/dotfiles/.vim/bundle/Vundle.vim
+call vundle#begin()
 
 " Need this for Vundle to work
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/vundle'
 " Gary Bernhardt’s colour scheme
-Bundle 'quanganhdo/grb256'
+Plugin 'quanganhdo/grb256'
 set t_Co=256
 colorscheme grb256
 
-Bundle 'bling/vim-airline'
-Bundle 'git://git.wincent.com/command-t.git'
-Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'derekwyatt/vim-scala'
-Bundle 'https://github.com/mileszs/ack.vim'
-Bundle 'tpope/vim-markdown'
-Bundle 'wavded/vim-stylus'
+Plugin 'bling/vim-airline'
+Plugin 'git://git.wincent.com/command-t.git'
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'derekwyatt/vim-scala'
+Plugin 'https://github.com/mileszs/ack.vim'
+Plugin 'tpope/vim-markdown'
+Plugin 'wavded/vim-stylus'
 Plugin 'jiangmiao/auto-pairs'
+Plugin 'ervandew/supertab'
+Plugin 'tpope/vim-fireplace'
+Plugin 'michaeljsmith/vim-indent-objects'
 
+call vundle#end()
 filetype plugin indent on
 " }}}
 
@@ -113,6 +117,7 @@ iabbrev ldis ಠ_ಠ
 iabbrev lsir ಠ_ರೃ
 iabbrev lhap ツ
 iabbrev fliptable （╯°□°）╯ ┻━┻
+iabbrev *shrug* ¯\_(ツ)_/¯
 " Quickly get to system clipboard
 map <leader>y "*y
 " Move around splits with <c-hjkl>
@@ -159,7 +164,7 @@ set wildignore+=.hg,.git,.svn                                     " version cont
 set wildignore+=bower_components,_bower_components,node_modules   " frontend packages
 set wildignore+=*.jpg,*.png,*.gif                                 " binary images
 set wildignore+=play-2.*,app/protobuf,target/*,ghostdriver        " play framework
-set wildignore+=context,app-pub,project,shared-kernel,sub
+set wildignore+=context
 set wildignore+=venv                                              " python
 set wildignore+=*.eot,*.svg,*.ttf,*.woff                          " fonts
 set wildignore+=dist                                              " generated distribution packages
@@ -184,7 +189,13 @@ if has("autocmd")
   filetype on
   " Treat .json files as .js
   autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
+  autocmd BufNewFile,BufRead *.txt call FoldParagraphs()
 endif
+
+function! FoldParagraphs()
+  set foldmethod=expr
+  set foldexpr=getline(v:lnum)=~'^\\s*$'&&getline(v:lnum+1)=~'\\S'?'<1':1
+endfunction
 
 " Make sure Vim returns to the same line when reopening a file
 augroup line_return
@@ -213,7 +224,7 @@ function! RunTests(filename)
   else
     " First choice: project-specific test script
     if filereadable("script/test")
-      exec ":!script/test " . a:filename
+      exec ":!clear & script/test " . a:filename
     " Fall back to the .test-commands pipe if available, assuming someone
     " is reading the other side and running the commands
     elseif filewritable(".test-commands")

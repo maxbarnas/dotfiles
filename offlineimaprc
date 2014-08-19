@@ -1,0 +1,46 @@
+[general]
+ui = ttyui
+accounts = work
+pythonfile=~/.mutt/offlineimap.py
+fsync = False
+
+[mbnames]
+enabled = yes
+filename = ~/.mutt/mailboxes
+header = "mailboxes "
+peritem = "+%(accountname)s/%(foldername)s"
+sep = " "
+footer = "\n"
+
+[Account work]
+localrepository = work-Local
+remoterepository = work-Remote
+status_backend = sqlite
+filterheaders = Disposition-Notification-To
+
+[Repository work-Local]
+type = Maildir
+localfolders = ~/.mail/work
+nametrans = lambda folder: {'Sent':             'Sent Items',
+                            'Trash':            'Deleted Items',
+                            }.get(folder, folder)
+
+[Repository work-Remote]
+maxconnections = 1
+type = IMAP
+remotehost = mail.hostedoffice.ag
+remoteuser = jezen.thomas@vaamo.de
+remotepasseval = get_keychain_pass('jezen.thomas@vaamo.de', 'mail.hostedoffice.ag')
+cert_fingerprint = 6edd31540e615f0a28e08d864a3a3edf3186439e
+ssl = yes
+nametrans = lambda folder: {'Sent Items':       'Sent',
+                            'Deleted Items':    'Trash',
+                            }.get(folder, folder)
+folderfilter = lambda folder: folder not in ['Calendar',
+                                             'Outbox',
+                                             'Tasks',
+                                             'Junk E-Mail',
+                                             'Notes',
+                                             'Journal',
+                                             'Contacts', ]
+

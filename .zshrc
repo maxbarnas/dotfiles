@@ -29,6 +29,5 @@ source ~/.aliases
 # Fire up autoenv
 source /usr/local/opt/autoenv/activate.sh
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+PATH=$HOME/bin:$PATH:$HOME/.rvm/bin
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
