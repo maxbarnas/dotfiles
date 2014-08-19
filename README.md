@@ -1,14 +1,10 @@
-# ~/dotfiles
+*~/dotfiles*
 
-My settings for OSX, vim, tmux, version control etc.
+Use stuff from here if you like, but don’t blame me if your computer explodes.
 
-This is a fork of [Mathias Bynens’ dotfiles repo](https://github.com/mathiasbynens/dotfiles), so his is the one to look at.
-
-In a nutshell:
-- Create config files in `~/dotfiles`
-- Version control them
-- Symlink them with `ln -s ~/dotfiles/.file ~/.file`
-
-### Extra thanks
+###### Thanks
+- Benjamin Reitzammer
 - Gary Bernhardt
 - Steve Losh
+
+![](http://i.imgur.com/NAn3ojT.gif)
