@@ -142,6 +142,10 @@ endfunction
 map <leader>n :call RenameFile()<cr>
 " Reload active Chrome tab. Needs chrome-cli. Get it with Homebrew.
 nnoremap <leader>l :w\|:silent !chrome-cli reload<cr>
+" Navigate buffers more quickly
+nnoremap <c-n> :bn<cr>
+nnoremap <c-p> :bp<cr>
+nnoremap <c-w> :bd<cr>
 " }}}
 
 " Searching " {{{
