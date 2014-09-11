@@ -1,5 +1,5 @@
 " Jezen Thomas’ .vimrc
-"   jezenthomas@gmail.com
+"   jezen@jezenthomas.com
 "   jezenthomas.com
 "
 " Thanks to:
@@ -16,24 +16,25 @@ set rtp+=~/dotfiles/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " Need this for Vundle to work
-Plugin 'gmarik/vundle'
+Plugin 'gmarik/Vundle.vim'
+
 " Gary Bernhardt’s colour scheme
 Plugin 'quanganhdo/grb256'
 set t_Co=256
 colorscheme grb256
 
+" Pimp my editor
 Plugin 'bling/vim-airline'
 Plugin 'git://git.wincent.com/command-t.git'
+Plugin 'https://github.com/mileszs/ack.vim'
+Plugin 'ervandew/supertab'
+
+" Language specific
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'derekwyatt/vim-scala'
-Plugin 'https://github.com/mileszs/ack.vim'
-Plugin 'tpope/vim-markdown'
 Plugin 'wavded/vim-stylus'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'ervandew/supertab'
 Plugin 'tpope/vim-fireplace'
-Plugin 'michaeljsmith/vim-indent-objects'
 
 call vundle#end()
 filetype plugin indent on
@@ -194,6 +195,7 @@ if has("autocmd")
   " Treat .json files as .js
   autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
   autocmd BufNewFile,BufRead *.txt call FoldParagraphs()
+  autocmd BufNewFile,BufRead *.md setlocal syntax=off
 endif
 
 function! FoldParagraphs()
@@ -209,9 +211,6 @@ augroup line_return
     \     execute 'normal! g`"zvzz' |
     \ endif
 augroup END
-
-" Don't syntax highlight markdown because it's often wrong
-autocmd! FileType mkd setlocal syn=off
 " }}}
 
 " Ruby on Rails "{{{
@@ -249,6 +248,6 @@ function! RunTests(filename)
   end
 endfunction
 " Corresponds with G. Bernhardt’s Cucumber wrapper
-nnoremap <leader>c :w\|:!script/features<cr>
+nnoremap <leader>c :w\|:!clear&script/features<cr>
 "}}}
 
