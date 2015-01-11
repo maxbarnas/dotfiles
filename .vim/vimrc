@@ -1,7 +1,7 @@
 " Jezen Thomas’ .vimrc
 "   jezen@jezenthomas.com
 "   jezenthomas.com
-"
+
 " Thanks to:
 "   - Steve Losh
 "   - Gary Bernhardt
@@ -9,7 +9,7 @@
 "   - Vincent Driessen
 "   - Benjamin Reitzammer
 
-" Init & Vundle {{{
+" Init & Vundle ------------------------------------------------------------ {{{
 set nocompatible
 filetype off
 set rtp+=~/dotfiles/.vim/bundle/Vundle.vim
@@ -28,6 +28,7 @@ Plugin 'bling/vim-airline'
 Plugin 'git://git.wincent.com/command-t.git'
 Plugin 'https://github.com/mileszs/ack.vim'
 Plugin 'ervandew/supertab'
+Plugin 'tpope/vim-fugitive'
 
 " Language specific
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
@@ -39,8 +40,7 @@ Plugin 'tpope/vim-fireplace'
 call vundle#end()
 filetype plugin indent on
 " }}}
-
-"Basic config " {{{
+" Basic config ------------------------------------------------------------- {{{
 " This makes RVM work inside Vim.
 set shell=bash
 set lazyredraw
@@ -49,8 +49,8 @@ set hidden
 set viminfo=
 set noesckeys
 " }}}
-
-" UI " {{{
+" UI ----------------------------------------------------------------------- {{{
+set number
 set relativenumber                " Show relative line numbers
 syntax on                         " Enable syntax highlighting
 set ruler                         " Show current position in status bar
@@ -74,8 +74,7 @@ set list                          " Show invisible characters
 set noerrorbells                  " Disable bells
 set wildmenu                      " Enhance command-line completion
 " }}}
-
-" Editing " {{{
+" Editing ------------------------------------------------------------------ {{{
 set clipboard=unnamed             " Use the system clipboard
 set et                            " Pressing TAB creates spaces instead
 set tabstop=2
@@ -89,10 +88,10 @@ set completeopt-=preview          " Disable scratch preview buffer
 set ttyfast
 set encoding=utf-8 nobomb         " Use UTF-8 without BOM
 set nojoinspaces                  " Don’t double space after join
+set splitbelow                    " I always thought vim opened splits backwards
+set splitright
 " }}}
-
-" Convenience mappings " {{{
-"---------------------------
+" Convenience mappings ----------------------------------------------------- {{{
 " Better than `,` since `-` is useless anyway and we need `,` for reverse find
 let mapleader="-"
 " Clean trailing whitespace
@@ -146,10 +145,9 @@ nnoremap <leader>l :w\|:silent !chrome-cli reload<cr>
 " Navigate buffers more quickly
 nnoremap <c-n> :bn<cr>
 nnoremap <c-p> :bp<cr>
-nnoremap <c-w> :bd<cr>
+nnoremap <c-x> :bd<cr>
 " }}}
-
-" Searching " {{{
+" Searching ---------------------------------------------------------------- {{{
 set showmatch                     " Show matching bracket when under cursor
 set hlsearch                      " Highlight search results
 set ignorecase                    " Ignore case when searching
@@ -169,7 +167,6 @@ set wildignore+=.hg,.git,.svn                                     " version cont
 set wildignore+=bower_components,_bower_components,node_modules   " frontend packages
 set wildignore+=*.jpg,*.png,*.gif                                 " binary images
 set wildignore+=play-2.*,app/protobuf,target/*,ghostdriver        " play framework
-set wildignore+=context
 set wildignore+=venv                                              " python
 set wildignore+=*.eot,*.svg,*.ttf,*.woff                          " fonts
 set wildignore+=dist                                              " generated distribution packages
@@ -179,22 +176,44 @@ set wildignore+=activator*
 set wildignore+=app/assets/javascripts/lib/*
 set wildignore+=*.pdf
 set wildignore+=report
+set wildignore+=*/target/*
+set wildignore+=_site/*
+set wildignore+=vendor/bundle
 " }}}
-
-" Folding " {{{
+" Folding ------------------------------------------------------------------ {{{
+set foldlevelstart=0
 set foldmethod=marker " Use three curly braces
 " Toggle folds with Space
 nnoremap <Space> za
 vnoremap <Space> za
-" }}}
 
-" Automatic commands " {{{
+" Focus current fold
+nnoremap <leader>z zMzvzz
+
+function! MyFoldText()
+    let line = getline(v:foldstart)
+
+    let nucolwidth = &fdc + &number * &numberwidth
+    let windowwidth = winwidth(0) - nucolwidth - 3
+    let foldedlinecount = v:foldend - v:foldstart
+
+    " expand tabs into spaces
+    let onetab = strpart('          ', 0, &tabstop)
+    let line = substitute(line, '\t', onetab, 'g')
+
+    let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+    return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
+endfunction
+set foldtext=MyFoldText()
+" }}}
+" Automatic commands ------------------------------------------------------- {{{
 if has("autocmd")
   " Enable file type detection
   filetype on
   " Treat .json files as .js
   autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
-  autocmd BufNewFile,BufRead *.txt call FoldParagraphs()
+  autocmd BufNewFile,BufRead *.txt,conf/messages.* call FoldParagraphs()
   autocmd BufNewFile,BufRead *.md setlocal syntax=off
 endif
 
@@ -211,43 +230,79 @@ augroup line_return
     \     execute 'normal! g`"zvzz' |
     \ endif
 augroup END
-" }}}
 
-" Ruby on Rails "{{{
+" Auto-reload vim when vimrc changes
+augroup myvimrc
+    au!
+    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+augroup END
+" }}}
+" Ruby on Rails ------------------------------------------------------------ {{{
 " Fast-way to run rspec from vim, thanks to Gary Bernhardt
 " https://github.com/garybernhardt/dotfiles/blob/master/.vimrc
-nnoremap <leader>a :call RunTests('')<cr>
-function! RunTests(filename)
-  " Write the file and run tests for the given filename
-  if expand("%") != ""
-    :w
-  end
-  if match(a:filename, '\.feature$') != -1
-    exec ":!script/features " . a:filename
-  else
-    " First choice: project-specific test script
-    if filereadable("script/test")
-      exec ":!clear & script/test " . a:filename
-    " Fall back to the .test-commands pipe if available, assuming someone
-    " is reading the other side and running the commands
-    elseif filewritable(".test-commands")
-      let cmd = 'rspec --color --format progress --require "~/lib/vim_rspec_formatter" --format VimFormatter --out tmp/quickfix'
-      exec ":!echo " . cmd . " " . a:filename . " > .test-commands"
 
-      " Write an empty string to block until the command completes
-      sleep 100m " milliseconds
-      :!echo > .test-commands
-      redraw!
-    " Fall back to a blocking test run with Bundler
-    elseif filereadable("Gemfile")
-      exec ":!bundle exec rspec --color " . a:filename
-    " Fall back to a normal blocking test run
+function! RunTestFile(...)
+    if a:0
+        let command_suffix = a:1
     else
-      exec ":!rspec --color " . a:filename
-    end
-  end
-endfunction
-" Corresponds with G. Bernhardt’s Cucumber wrapper
-nnoremap <leader>c :w\|:!clear&script/features<cr>
-"}}}
+        let command_suffix = ""
+    endif
 
+    " Run the tests for the previously-marked file.
+    let in_test_file = match(expand("%"), '\(.feature\|_spec.rb\)$') != -1
+    if in_test_file
+        call SetTestFile()
+    elseif !exists("t:grb_test_file")
+        return
+    end
+    call RunTests(t:grb_test_file . command_suffix)
+endfunction
+
+function! RunNearestTest()
+    let spec_line_number = line('.')
+    call RunTestFile(":" . spec_line_number)
+endfunction
+
+function! SetTestFile()
+    " Set the spec file that tests will be run for.
+    let t:grb_test_file=@%
+endfunction
+
+function! RunTests(filename)
+    " Write the file and run tests for the given filename
+    if expand("%") != ""
+      :w
+    end
+    if match(a:filename, '\.feature$') != -1
+        exec ":!script/features " . a:filename
+    else
+        " First choice: project-specific test script
+        if filereadable("script/test")
+            exec ":!clear & script/test " . a:filename
+        " Fall back to the .test-commands pipe if available, assuming someone
+        " is reading the other side and running the commands
+        elseif filewritable(".test-commands")
+          let cmd = 'rspec --color --format progress --require "~/lib/vim_rspec_formatter" --format VimFormatter --out tmp/quickfix'
+          exec ":!echo " . cmd . " " . a:filename . " > .test-commands"
+
+          " Write an empty string to block until the command completes
+          sleep 100m " milliseconds
+          :!echo > .test-commands
+          redraw!
+        " Fall back to a blocking test run with Bundler
+        elseif filereadable("Gemfile")
+            exec ":!clear & bundle exec rspec --color " . a:filename
+        " Fall back to a normal blocking test run
+        else
+            exec ":!clear & rspec --color " . a:filename
+        end
+    end
+endfunction
+
+nnoremap <leader>a :call RunTests('')<cr>
+nnoremap <leader>T :call RunNearestTest()<cr>
+
+" Corresponds with G. Bernhardt’s Cucumber wrapper
+nnoremap <leader>C :w\|:!clear & script/features<cr>
+nnoremap <leader>c :w\|:!clear & script/features --profile wip<cr>
+"}}}

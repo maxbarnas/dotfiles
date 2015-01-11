@@ -1,5 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
-let g:netrw_dirhist_1='/Users/jgt/Sites/vaamo-backend/app/de/vaamo/web/controllers/admin'
-let g:netrw_dirhist_2='/Users/jgt/Sites/marketing/static/js/vendor'
-let g:netrw_dirhist_3='/Users/jgt/.ssh'
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/Users/jgt/Sites/vaamo-backend/app/de/vaamo/web'
+let g:netrw_dirhist_2='/Users/jgt/Sites/vaamo-backend/target/scala-2.11/classes_managed/de/vaamo/web/controllers'
+let g:netrw_dirhist_3='/Users/jgt/Sites/vaamo-backend/target/scala-2.11/classes_managed/de/vaamo/web/controllers/savingsgoal'
+let g:netrw_dirhist_4='/Users/jgt/Sites/vaamo-backend/target/scala-2.11/classes_managed/de/vaamo/web/controllers'
+let g:netrw_dirhist_5='/Users/jgt/Sites/vaamo-backend/target/scala-2.11/classes_managed/de/vaamo/web'
+let g:netrw_dirhist_6='/Users/jgt/Sites/vaamo-backend/target/scala-2.11/classes_managed/de/vaamo/web/controllers'
