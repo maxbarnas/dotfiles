@@ -95,7 +95,7 @@ set splitright
 " }}}
 " Convenience mappings ----------------------------------------------------- {{{
 " Better than `,` since `-` is useless anyway and we need `,` for reverse find
-let mapleader="-"
+let mapleader="\<space>"
 " Clean trailing whitespace
 nnoremap <leader>w mz:%s/\s\+$//<cr>:let @/=''<cr>`z
 " Stop opening man pages
@@ -120,6 +120,7 @@ iabbrev lsir ಠ_ರೃ
 iabbrev lhap ツ
 iabbrev fliptable （╯°□°）╯ ┻━┻
 iabbrev *shrug* ¯\_(ツ)_/¯
+iabbrev herewego ᕕ( ᐛ )ᕗ
 " Quickly get to system clipboard
 map <leader>y "*y
 " Move around splits with <c-hjkl>
@@ -181,13 +182,14 @@ set wildignore+=report
 set wildignore+=*/target/*
 set wildignore+=_site/*
 set wildignore+=vendor/bundle
+set wildignore+=*.pyc
 " }}}
 " Folding ------------------------------------------------------------------ {{{
 set foldlevelstart=0
 set foldmethod=marker " Use three curly braces
-" Toggle folds with Space
-nnoremap <Space> za
-vnoremap <Space> za
+" Toggle folds with minus
+nnoremap - za
+vnoremap - za
 
 " Focus current fold
 nnoremap <leader>z zMzvzz
@@ -215,6 +217,7 @@ if has("autocmd")
   filetype on
   " Treat .json files as .js
   autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
+  autocmd BufNewFile,BufRead *.cap setfiletype cap syntax=ruby
   autocmd BufNewFile,BufRead *.txt,conf/messages.* call FoldParagraphs()
   autocmd BufNewFile,BufRead *.md setlocal syntax=off
 endif
@@ -303,8 +306,10 @@ endfunction
 
 nnoremap <leader>a :call RunTests('')<cr>
 nnoremap <leader>T :call RunNearestTest()<cr>
+nnoremap <leader>rs :call SetTestFile()<cr>
+nnoremap <leader>rt :call RunTestFile()<cr>
 
 " Corresponds with G. Bernhardt’s Cucumber wrapper
-nnoremap <leader>C :w\|:!clear & script/features<cr>
-nnoremap <leader>c :w\|:!clear & script/features --profile wip<cr>
+nnoremap <leader>C :w\|:!clear & script/features --format progress<cr>
+nnoremap <leader>c :w\|:!clear & script/features --profile wip --format pretty<cr>
 "}}}
