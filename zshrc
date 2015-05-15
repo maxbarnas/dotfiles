@@ -37,3 +37,5 @@ PATH=$HOME/bin:$PATH:$HOME/.rvm/bin
 #
 # I’m clumsy and I keep closing panes/sessions with <c-d>
 set -o ignoreeof
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

@@ -1,7 +1,10 @@
+# vi: ft=muttrc
+
 source ~/.mutt/muttrc
 
 set from      = "jezen.thomas@vaamo.de"
-set sendmail = "/usr/local/bin/msmtp -a work"
+set smtp_pass = "`python ~/.mutt/offlineimap.py "jezen.thomas@vaamo.de" "smtp.office365.com"`"
+set smtp_url = "smtp://jezen.thomas\@vaamo.de@smtp.office365.com:587"
 
 set spoolfile = "+work/INBOX"
 set record    = "+work/Sent"

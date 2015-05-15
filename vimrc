@@ -12,7 +12,7 @@
 " Init & Vundle ------------------------------------------------------------ {{{
 set nocompatible
 filetype off
-set rtp+=~/dotfiles/.vim/bundle/Vundle.vim
+set rtp+=~/dotfiles/vim/bundle/Vundle.vim
 call vundle#begin()
 
 " Need this for Vundle to work
@@ -46,7 +46,6 @@ set shell=bash
 set lazyredraw
 set autoread
 set hidden
-set viminfo=
 set noesckeys
 " }}}
 " UI ----------------------------------------------------------------------- {{{

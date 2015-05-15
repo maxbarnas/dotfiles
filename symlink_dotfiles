@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+cd ~
+find . -maxdepth 1 -type l -exec rm {} \;
+for dotfile in $( ls ~/dotfiles | grep -v 'LICENSE\|README' ); do
+  ln -s ~/dotfiles/$dotfile ~/.$dotfile
+done
+
