@@ -93,26 +93,37 @@ set splitbelow                    " I always thought vim opened splits backwards
 set splitright
 " }}}
 " Convenience mappings ----------------------------------------------------- {{{
-" Better than `,` since `-` is useless anyway and we need `,` for reverse find
+
+" Please, do not use comma for leader. You need the comma for moving to a
+" previous match from a linewise character search.
 let mapleader="\<space>"
+
 " Clean trailing whitespace
 nnoremap <leader>w mz:%s/\s\+$//<cr>:let @/=''<cr>`z
-" Stop opening man pages
+
+" Since I remapped H and L to move to the beginning and end of the current
+" line respectively, something in my subconscious made me start using K to
+" move to the top of the buffer. By default, K will open the man page for the
+" term under the cursor, which is completely useless to me.
 nnoremap K <nop>
+
 " Fast saving
 nmap <leader>s :w!<cr>
+
 " Save as super user
 noremap <leader>S :w !sudo tee % > /dev/null<CR>
+
 " Fast quit
 nmap <leader>q :q<cr>
+
 " Jump to beginning of line
 noremap H 0
 " Jump to end of line
 noremap L $
-" Toggle paste mode
-map <leader>pp :setlocal paste!<cr>
+
 " Toggle alternate buffer
 nnoremap <leader><leader> <c-^>
+
 " Emoticons
 iabbrev ldis ಠ_ಠ
 iabbrev lsir ಠ_ರೃ
@@ -120,17 +131,8 @@ iabbrev lhap ツ
 iabbrev fliptable （╯°□°）╯ ┻━┻
 iabbrev *shrug* ¯\_(ツ)_/¯
 iabbrev herewego ᕕ( ᐛ )ᕗ
-" Quickly get to system clipboard
-map <leader>y "*y
-" Move around splits with <c-hjkl>
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
 nnoremap <leader>v :vsplit<cr>
 nnoremap <leader>h :split<cr>
-nnoremap <c--> <c-w>-
-nnoremap <c-+> <-w>+
 " Rename current file, thanks to Gary Bernhardt
 function! RenameFile()
     let old_name = expand('%')
@@ -142,12 +144,6 @@ function! RenameFile()
     endif
 endfunction
 map <leader>n :call RenameFile()<cr>
-" Reload active Chrome tab. Needs chrome-cli. Get it with Homebrew.
-nnoremap <leader>l :w\|:silent !chrome-cli reload<cr>
-" Navigate buffers more quickly
-nnoremap <c-n> :bn<cr>
-nnoremap <c-p> :bp<cr>
-nnoremap <c-x> :bd<cr>
 " }}}
 " Searching ---------------------------------------------------------------- {{{
 set showmatch                     " Show matching bracket when under cursor
@@ -157,9 +153,8 @@ set smartcase                     " Case-sensitive if pattern includes uppercase
 set incsearch                     " Highlight dynamically while typing
 
 " Clear the higlighted search results
-nnoremap <cr> :nohlsearch<cr>
-" Ack results in quickfix window
-nnoremap <leader>A :Ack
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+
 " Keep search matches in middle of window
 nnoremap n nzzzv
 nnoremap N Nzzzv
@@ -215,10 +210,14 @@ if has("autocmd")
   " Enable file type detection
   filetype on
   " Treat .json files as .js
-  autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
-  autocmd BufNewFile,BufRead *.cap setfiletype cap syntax=ruby
-  autocmd BufNewFile,BufRead *.txt,conf/messages.* call FoldParagraphs()
-  autocmd BufNewFile,BufRead *.md setlocal syntax=off
+  au BufNewFile,BufRead *.json setfiletype json syntax=javascript
+  au BufNewFile,BufRead *.cap setfiletype cap syntax=ruby
+  au BufNewFile,BufRead *.txt,conf/messages.* call FoldParagraphs()
+  au BufNewFile,BufRead *.md setlocal syntax=off tw=80
+  " Automatically open quickfix window when calling :make, or close the
+  " quickfix window if there are no errors to report
+  au QuickFixCmdPost [^l]* nested cwindow
+  au QuickFixCmdPost    l* nested lwindow
 endif
 
 function! FoldParagraphs()
