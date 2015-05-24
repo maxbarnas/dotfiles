@@ -13,7 +13,7 @@ image/tiff; ~/.mutt/view_attachment.sh %s tiff
 application/pdf; ~/.mutt/view_attachment.sh %s pdf
 
 # HTML
-text/html; html2text.py %s %{charset}; nametemplate=%s.html; copiousoutput
+text/html; ~/.bin/html2text.py %s %{charset}; nametemplate=%s.html; copiousoutput
 text/html; ~/.mutt/view_attachment.sh %s html
 #text/html; w3m -I %{charset} -T text/html; copiousoutput 
 #text/html; links -dump %s; nametemplate=%s.html; copiousoutput; needsterminal
