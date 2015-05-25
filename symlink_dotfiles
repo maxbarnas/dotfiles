@@ -2,9 +2,8 @@
 
 set -e
 
-cd ~
+(cd ~
 find . -maxdepth 1 -type l -exec rm {} \;
 for dotfile in $( ls ~/dotfiles | grep -v 'LICENSE\|README' ); do
-  ln -s ~/dotfiles/$dotfile ~/.$dotfile
-done
-
+  ln -s ~/dotfiles/"$dotfile" ~/."$dotfile"
+done)
