@@ -72,6 +72,10 @@ set showcmd                       " Show command as it’s being typed
 set list                          " Show invisible characters
 set noerrorbells                  " Disable bells
 set wildmenu                      " Enhance command-line completion
+
+" Default netrw to tree mode
+let g:netrw_liststyle=3
+
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 " }}}
