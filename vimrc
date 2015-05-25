@@ -120,10 +120,19 @@ noremap <leader>S :w !sudo tee % > /dev/null<CR>
 " Fast quit
 nmap <leader>q :q<cr>
 
-" Jump to beginning of line
-noremap H 0
+" Jump to first character or column
+noremap H :call FirstCharOrFirstCol()<cr>
 " Jump to end of line
 noremap L $
+
+:function! FirstCharOrFirstCol()
+:  let current_col = virtcol('.')
+:  normal ^
+:  let first_char = virtcol('.')
+:  if current_col == first_char
+:    normal 0
+:  endif
+:endfunction
 
 " Toggle alternate buffer
 nnoremap <leader><leader> <c-^>
