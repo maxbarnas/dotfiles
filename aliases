@@ -109,3 +109,6 @@ function remac {
   sudo networksetup -detectnewhardware
   echo $(ifconfig en0 | grep ether)
 }
+
+# Computer game music
+alias airadio="mpg123 http://mp3.ai-radio.org"

@@ -179,6 +179,7 @@ set wildignore+=*/target/*
 set wildignore+=_site/*
 set wildignore+=vendor/bundle
 set wildignore+=*.pyc
+set wildignore+=sassc-3.1.0
 " }}}
 " Folding ------------------------------------------------------------------ {{{
 set foldlevelstart=0
