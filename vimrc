@@ -47,6 +47,9 @@ set lazyredraw
 set autoread
 set hidden
 set noesckeys
+set cryptmethod=blowfish2 " https://dgl.cx/2014/10/vim-blowfish
+set exrc " Enable use of project-specific .vimrc
+set secure " Only run autocommands owned by me
 " }}}
 " UI ----------------------------------------------------------------------- {{{
 set number
