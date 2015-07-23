@@ -147,6 +147,7 @@ iabbrev lhap ツ
 iabbrev fliptable （╯°□°）╯ ┻━┻
 iabbrev *shrug* ¯\_(ツ)_/¯
 iabbrev herewego ᕕ( ᐛ )ᕗ
+iabbrev dealwithit (⌐■_■)
 nnoremap <leader>v :vsplit<cr>
 nnoremap <leader>h :split<cr>
 " }}}
