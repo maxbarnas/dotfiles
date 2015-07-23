@@ -1,46 +1,57 @@
-let mapleader = ","
+let mapleader = " "
 
 map <leader>lv :source ~/.vimperatorrc<CR>
 nnoremap k 5k
 nnoremap j 5j
-map <C-l> :tabnext<CR>
-map <C-h> :tabprevious<CR>
-map <leader>n :noh<CR>
+map <C-l> :noh<CR>
 
-" make textareas editable in macvim
-set editor='bash -lc "mvim -f \$*" mvim '
 set titlestring=""
 set gui=noaddons,nobookmarks,nomenu,nonavigation,tabs
 set status=input,location,ssl
-set defsearch=google
+set defsearch=duckduckgo
 set showstatuslinks=2
-
-" no search engine completions
-set complete=l
 
 " no close buttons on tabs
 set! browser.tabs.closeButtons=2
 
-" Find
-"" perform incremental searching
 set incsearch
-"" highlight search results
 set hlsearch
-"" typically (see below) ignore case
 set ignorecase
-"" only consider case if an upper case char is used
 set smartcase
 
 colorscheme solarized_dark
-hi Normal -append font-size: 13px !important; font-family: "Menlo";
 hi StatusLine -append font-size:13px; font-family: "Menlo";
 
-qmark p https://www.playframework.com/documentation/2.3.x/ScalaHome
-qmark p https://github.com/playframework/playframework/
-qmark l http://localhost:9000/
-qmark L http://localhost:8000/
-qmark k http://localhost:4000/
-qmark m http://www.mutt.org/doc/manual/manual-4.html#patterns
-qmark w https://wiki.vaamo-ag.de/dashboard.action
-qmark s https://www.softwerkskammer.org/
-qmark v https://github.com/Vaamo
+" Hide status bar when fullscreen mode is detected
+autocmd Fullscreen .* js updateBottomBar()
+
+" Re-enable bottom bar during certain commands.
+noremap : :js updateBottomBar(false)<CR>:
+noremap o :js updateBottomBar(false)<CR>o
+noremap O :js updateBottomBar(false)<CR>O
+noremap t :js updateBottomBar(false)<CR>t
+noremap T :js updateBottomBar(false)<CR>t
+noremap / :js updateBottomBar(false)<CR>/
+cnoremap <CR> <CR>:js updateBottomBar()<CR>
+cnoremap <Esc> <Esc>:js updateBottomBar()<CR>
+
+:js << EOF
+let hlContentSepValue = highlight.get('ContentSeparator').value
+
+function updateBottomBar(close = window.fullScreen) {
+  let bb = document.getElementById('liberator-bottombar')
+  if (! bb) return
+
+  if (close) {
+    bb.style.height = '0px'
+    bb.style.overflow = 'hidden'
+    liberator.execute('highlight ContentSeparator display: none;')
+  }
+  else {
+    bb.style.height = ''
+    bb.style.overflow = ''
+    liberator.execute('highlight ContentSeparator ' + hlContentSepValue)
+  }
+}
+updateBottomBar()
+EOF
