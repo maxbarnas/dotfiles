@@ -22,4 +22,3 @@ if __name__ == '__main__':
     import sys
     account = sys.argv[1]
     server = sys.argv[2]
-    print get_keychain_pass(account, server)

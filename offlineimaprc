@@ -31,8 +31,9 @@ nametrans = lambda folder: {'Drafts':  '[Gmail]/Drafts',
 maxconnections = 1
 type = Gmail
 remoteuser = jezenthomas@gmail.com
-remotepasseval = get_keychain_pass('jezenthomas@gmail.com', 'imap.gmail.com')
+remotepasseval = get_keychain_pass(account="jezenthomas@gmail.com", server="imap.gmail.com")
 realdelete = no
+sslcacertfile = /usr/local/etc/openssl/osx_cert.pem
 nametrans = lambda folder: {'[Gmail]/Drafts':    'Drafts',
                             '[Gmail]/Sent Mail': 'sent',
                             '[Gmail]/Starred':   'flagged',
