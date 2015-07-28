@@ -8,7 +8,7 @@ map <C-l> :noh<CR>
 set titlestring=""
 set gui=noaddons,nobookmarks,nomenu,nonavigation,tabs
 set status=input,location,ssl
-set defsearch=duckduckgo
+set defsearch=google
 set showstatuslinks=2
 
 " no close buttons on tabs
