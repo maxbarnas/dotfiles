@@ -112,3 +112,6 @@ function remac {
 
 # Computer game music
 alias airadio="mpg123 http://mp3.ai-radio.org"
+
+# Hit `tms` then <tab> to select a running tmux session
+alias tms="tmux attach -d -t"
