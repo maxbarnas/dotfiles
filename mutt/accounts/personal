@@ -2,9 +2,8 @@
 
 source ~/.mutt/muttrc
 
-set from      = "jezen@jezenthomas.com"
-set smtp_pass = "`python ~/.mutt/offlineimap.py "jezenthomas@gmailcom" "smtp.gmail.com"`"
-set smtp_url = "smtp://jezenthomas\@gmail.com@smtp.gmail.com:465"
+set from      = "jezenthomas@gmail.com"
+set sendmail  = /usr/local/bin/msmtp
 
 set spoolfile = "+personal/INBOX"
 set record    = "+personal/Sent"

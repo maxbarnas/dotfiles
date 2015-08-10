@@ -7,6 +7,9 @@ set tmpdir           = ~/.tmp                # where to keep temp files
 set mbox_type        = Maildir               # mailbox type
 set signature        = ~/.mutt/signature
 
+# https://github.com/Homebrew/homebrew/issues/33419
+set smtp_authenticators = 'gssapi:login'
+
 # Basic Options --------------------------------------
 set wait_key = no        # shut up, mutt
 set timeout = 3          # idle time before scanning
