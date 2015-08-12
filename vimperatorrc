@@ -22,6 +22,8 @@ set smartcase
 colorscheme solarized_dark
 hi StatusLine -append font-size:13px; font-family: "Menlo";
 
+qmark t https://twitter.com/
+
 " Hide status bar when fullscreen mode is detected
 autocmd Fullscreen .* js updateBottomBar()
 
