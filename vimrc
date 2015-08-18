@@ -168,12 +168,12 @@ nnoremap N Nzzzv
 " Ignore stuff from Command-T
 set wildignore+=.hg,.git,.svn                                     " version control
 set wildignore+=bower_components,_bower_components,node_modules   " frontend packages
-set wildignore+=*.jpg,*.png,*.gif                                 " binary images
-set wildignore+=play-2.*,app/protobuf,target/*,ghostdriver        " play framework
+set wildignore+=*.jpg,*.png,*.gif,pics                            " binary images
+set wildignore+=core                                              " uxpin framework
 set wildignore+=venv                                              " python
 set wildignore+=*.eot,*.svg,*.ttf,*.woff                          " fonts
 set wildignore+=dist                                              " generated distribution packages
-set wildignore+=tmp
+set wildignore+=tmp,temp
 set wildignore+=*.lock,*.db
 set wildignore+=activator*
 set wildignore+=app/assets/javascripts/lib/*
@@ -181,9 +181,10 @@ set wildignore+=*.pdf
 set wildignore+=report
 set wildignore+=*/target/*
 set wildignore+=_site/*
-set wildignore+=vendor/bundle
+set wildignore+=vendor
 set wildignore+=*.pyc
-set wildignore+=sassc-3.1.0
+set wildignore+=compiled
+set wildignore+=*.www
 " }}}
 " Folding ------------------------------------------------------------------ {{{
 set foldlevelstart=0
